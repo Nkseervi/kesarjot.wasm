@@ -1,9 +1,8 @@
-﻿namespace kesarjot.wasm.Pages
+namespace kesarjot.wasm.Pages
 {
-    public class DisplayProductsBase : ComponentBase
+    public partial class DisplayProducts
     {
         [Parameter]
         public IEnumerable<ProductDto> Products { get; set; }
-
     }
 }

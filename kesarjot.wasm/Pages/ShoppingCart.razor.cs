@@ -1,6 +1,7 @@
-﻿namespace kesarjot.wasm.Pages
+using global::System;
+namespace kesarjot.wasm.Pages
 {
-    public class ShoppingCartBase : ComponentBase
+    public partial class ShoppingCart
     {
         [Inject]
         public IJSRuntime Js { get; set; }
@@ -10,11 +11,8 @@
 
         [Inject]
         public IManageCartItemsLocalStorageService ManageCartItemsLocalStorageService { get; set; }
-
         public List<CartItemDto> ShoppingCartItems { get; set; }
-
         public string ErrorMessage { get; set; }
-
         protected string TotalPrice { get; set; }
         protected int TotalQuantity { get; set; }
 
@@ -27,17 +25,15 @@
             }
             catch (Exception ex)
             {
-
                 ErrorMessage = ex.Message;
             }
         }
+
         protected async Task DeleteCartItem_Click(int id)
         {
             var cartItemDto = await ShoppingCartService.DeleteItem(id);
-
             await RemoveCartItem(id);
             CartChanged();
-
         }
 
         protected async Task UpdateQtyCartItem_Click(int id, int qty)
@@ -51,36 +47,25 @@
                         CartItemId = id,
                         Qty = qty
                     };
-
                     var returnedUpdateItemDto = await this.ShoppingCartService.UpdateQty(updateItemDto);
-
                     await UpdateItemTotalPrice(returnedUpdateItemDto);
-
                     CartChanged();
-
                     await MakeUpdateQtyButtonVisible(id, false);
-
-
                 }
                 else
                 {
                     var item = this.ShoppingCartItems.FirstOrDefault(i => i.Id == id);
-
                     if (item != null)
                     {
                         item.Qty = 1;
                         item.TotalPrice = item.Price;
                     }
-
                 }
-
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
 
         protected async Task UpdateQty_Input(int id)
@@ -96,15 +81,14 @@
         private async Task UpdateItemTotalPrice(CartItemDto cartItemDto)
         {
             var item = GetCartItem(cartItemDto.Id);
-
             if (item != null)
             {
                 item.TotalPrice = cartItemDto.Price * cartItemDto.Qty;
             }
 
             await ManageCartItemsLocalStorageService.SaveCollection(ShoppingCartItems);
-
         }
+
         private void CalculateCartSummaryTotals()
         {
             SetTotalPrice();
@@ -115,6 +99,7 @@
         {
             TotalPrice = this.ShoppingCartItems.Sum(p => p.TotalPrice).ToString("C", CultureInfo.CreateSpecificCulture("in-IN"));
         }
+
         private void SetTotalQuantity()
         {
             TotalQuantity = this.ShoppingCartItems.Sum(p => p.Qty);
@@ -124,20 +109,18 @@
         {
             return ShoppingCartItems.FirstOrDefault(i => i.Id == id);
         }
+
         private async Task RemoveCartItem(int id)
         {
             var cartItemDto = GetCartItem(id);
-
             ShoppingCartItems.Remove(cartItemDto);
-
             await ManageCartItemsLocalStorageService.SaveCollection(ShoppingCartItems);
-
         }
+
         private void CartChanged()
         {
             CalculateCartSummaryTotals();
             ShoppingCartService.RaiseEventOnShoppingCartChanged(TotalQuantity);
         }
-
     }
 }

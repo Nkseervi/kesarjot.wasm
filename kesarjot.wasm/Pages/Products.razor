@@ -1,7 +1,6 @@
 ﻿@page "/"
-@inherits ProductsBase
 
-@if (Products == null && ErrorMessage == null)
+@if (ProductsList == null && ErrorMessage == null)
 {
     <DisplaySpinner />
 
@@ -14,7 +13,7 @@ else
 {
     <h3 class="mb-5">Products</h3>
 
-    var productCount = Products.Count();
+    var productCount = ProductsList.Count();
 
     @if (productCount > 0)
     {
