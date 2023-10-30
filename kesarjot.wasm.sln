@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kesarjot.wasm", "kesarjot.wasm\kesarjot.wasm.csproj", "{AC391642-4AB0-4990-B9B6-5BBEDB0198E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kesarjot.wasm", "kesarjot.wasm\kesarjot.wasm.csproj", "{AC391642-4AB0-4990-B9B6-5BBEDB0198E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kithub.api.models", "kithub.api.models\kithub.api.models.csproj", "{9E83F5B9-E26C-4230-8A91-CF0DAA8745B7}"
 EndProject
