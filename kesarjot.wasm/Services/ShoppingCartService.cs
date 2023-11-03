@@ -2,26 +2,26 @@
 {
     public class ShoppingCartService : IShoppingCartService
     {
-        private readonly HttpClient httpClient;
+        private readonly HttpClient _httpClient;
 
         public event Action<int> OnShoppingCartChanged;
 
         public ShoppingCartService(HttpClient httpClient)
         {
-            this.httpClient = httpClient;
+            _httpClient = httpClient;
         }
 
         public async Task<CartItemDto> AddItem(CartItemToAddDto cartItemToAddDto)
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync<CartItemToAddDto>("api/ShoppingCart", cartItemToAddDto);
+                var response = await _httpClient.PostAsJsonAsync<CartItemToAddDto>("api/ShoppingCart", cartItemToAddDto);
 
                 if (response.IsSuccessStatusCode)
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                     {
-                        return default(CartItemDto);
+                        return default;
                     }
 
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
@@ -45,13 +45,13 @@
         {
             try
             {
-                var response = await httpClient.DeleteAsync($"api/ShoppingCart/{id}");
+                var response = await _httpClient.DeleteAsync($"api/ShoppingCart/{id}");
 
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
                 }
-                return default(CartItemDto);
+                return default;
             }
             catch (Exception)
             {
@@ -64,7 +64,7 @@
         {
             try
             {
-                var response = await httpClient.GetAsync($"api/ShoppingCart/{userId}/GetItems");
+                var response = await _httpClient.GetAsync($"api/ShoppingCart/{userId}/GetItems");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -90,11 +90,8 @@
 
         public void RaiseEventOnShoppingCartChanged(int totalQty)
         {
-            if (OnShoppingCartChanged != null)
-            {
-                OnShoppingCartChanged.Invoke(totalQty);
-            }
-        }
+			OnShoppingCartChanged?.Invoke(totalQty);
+		}
 
         public async Task<CartItemDto> UpdateQty(CartItemQtyUpdateDto cartItemQtyUpdateDto)
         {
@@ -103,7 +100,7 @@
                 var jsonRequest = JsonConvert.SerializeObject(cartItemQtyUpdateDto);
                 var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
 
-                var response = await httpClient.PatchAsync($"api/ShoppingCart/{cartItemQtyUpdateDto.CartItemId}", content);
+                var response = await _httpClient.PatchAsync($"api/ShoppingCart/{cartItemQtyUpdateDto.CartItemId}", content);
 
                 if (response.IsSuccessStatusCode)
                 {

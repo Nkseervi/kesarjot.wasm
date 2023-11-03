@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace kesarjot.wasm.Authentication
@@ -8,20 +9,20 @@ namespace kesarjot.wasm.Authentication
         private readonly HttpClient _httpClient;
         private readonly AuthenticationStateProvider _authStateProvider;
         private readonly ILocalStorageService _localStorage;
-		private readonly IConfiguration _config;
-        private string authTokenStorageKey = string.Empty;
+        private readonly IConfiguration _config;
+        private readonly string _authTokenStorageKey = string.Empty;
 
-		public AuthenticationService(HttpClient httpClient,
-                                     AuthenticationStateProvider authStateProvider,
-                                     ILocalStorageService localStorage,
-                                     IConfiguration config)
+        public AuthenticationService(HttpClient httpClient,
+                               AuthenticationStateProvider authStateProvider,
+                               ILocalStorageService localStorage,
+                               IConfiguration config)
         {
             _httpClient = httpClient;
             _authStateProvider = authStateProvider;
             _localStorage = localStorage;
-			_config = config;
-            authTokenStorageKey = _config["authTokenStorageKey"];
-		}
+            _config = config;
+            _authTokenStorageKey = _config["authTokenStorageKey"];
+        }
 
         public async Task<AuthenticatedUserDto> Login(AuthenticationUserDto userForAuthentication)
         {
@@ -42,9 +43,9 @@ namespace kesarjot.wasm.Authentication
             }
             var result = System.Text.Json.JsonSerializer.Deserialize<AuthenticatedUserDto>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            await _localStorage.SetItemAsync(authTokenStorageKey, result.Access_Token);
+            await _localStorage.SetItemAsync(_authTokenStorageKey, result.Access_Token);
 
-            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.Access_Token);
+            await ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.Access_Token);
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", result.Access_Token);
             return result;
@@ -52,9 +53,7 @@ namespace kesarjot.wasm.Authentication
 
         public async Task Logout()
         {
-            await _localStorage.RemoveItemAsync(authTokenStorageKey);
-            ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
-            _httpClient.DefaultRequestHeaders.Authorization = null;
+            await ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
         }
 
     }
