@@ -17,13 +17,30 @@
 		<div class="col-auto">
 			<button type="submit" class="btn btn-success">Log In</button>
 		</div>
+
+		<div class="col-auto">
+			<button type="button" class="btn btn-primary" @onclick="RegisterUser">Register</button>
+		</div>
 	</div>
+	@if(showAuthenticationError)
+	{
+		<div class="row">
+			<div class="text-danger">
+				@authenticationErrorText
+			</div>
+		</div>
+	}
 </EditForm>
 @code {
 	private AuthenticationUserDto model = new();
 
 	private bool showAuthenticationError = false;
 	private string authenticationErrorText = string.Empty;
+
+	private void RegisterUser()
+	{
+		NavManager.NavigateTo("/register");
+	}
 
 	private async Task ExecuteLogin()
 	{
