@@ -4,25 +4,26 @@
     {
         private readonly ILocalStorageService localStorageService;
         private readonly IProductService productService;
-
-        private const string key = "ProductCollection";
+        private readonly IConfiguration _config;
 
         public ManageProductsLocalStorageService(ILocalStorageService localStorageService,
-                                                 IProductService productService)
+                                                 IProductService productService,
+                                                 IConfiguration config)
         {
             this.localStorageService = localStorageService;
             this.productService = productService;
+            _config = config;
         }
 
         public async Task<IEnumerable<ProductDto>> GetCollection()
         {
-            return await this.localStorageService.GetItemAsync<IEnumerable<ProductDto>>(key)
+            return await this.localStorageService.GetItemAsync<IEnumerable<ProductDto>>(_config["productsStorageKey"])
                     ?? await AddCollection();
         }
 
         public async Task RemoveCollection()
         {
-            await this.localStorageService.RemoveItemAsync(key);
+            await this.localStorageService.RemoveItemAsync(_config["productsStorageKey"]);
         }
 
         private async Task<IEnumerable<ProductDto>> AddCollection()
@@ -31,7 +32,7 @@
 
             if (productCollection != null)
             {
-                await this.localStorageService.SetItemAsync(key, productCollection);
+                await this.localStorageService.SetItemAsync(_config["productsStorageKey"], productCollection);
             }
 
             return productCollection;

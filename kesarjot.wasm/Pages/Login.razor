@@ -1,5 +1,7 @@
 ﻿@inject IAuthenticationService AuthService
 @inject NavigationManager NavManager
+@inject IManageCartItemsLocalStorageService CartLocalStorageManager
+@inject IShoppingCartService CartService
 
 <EditForm Model="model" OnValidSubmit="ExecuteLogin" class="">
 
@@ -51,6 +53,10 @@
 		if(result is not null)
 		{
 			NavManager.NavigateTo("/");
+			await CartLocalStorageManager.RemoveCollection();
+			var shoppingCartItems = await CartLocalStorageManager.GetCollection();
+			var totalQty = shoppingCartItems.Sum(i => i.Qty);
+			CartService.RaiseEventOnShoppingCartChanged(totalQty);
 		}
 		else
 		{

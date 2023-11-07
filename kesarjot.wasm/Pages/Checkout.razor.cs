@@ -26,7 +26,7 @@ namespace kesarjot.wasm.Pages
                     Guid orderGuid = Guid.NewGuid();
                     PaymentAmount = ShoppingCartItems.Sum(p => p.TotalPrice);
                     TotalQty = ShoppingCartItems.Sum(p => p.Qty);
-                    PaymentDescription = $"O_{HardCoded.UserId}_{orderGuid}";
+                    PaymentDescription = $"O_{orderGuid}";
                 }
                 else
                 {

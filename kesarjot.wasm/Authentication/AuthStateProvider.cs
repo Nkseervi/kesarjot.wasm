@@ -10,7 +10,7 @@ namespace kesarjot.wasm.Authentication
         private readonly ILocalStorageService _localStorage;
 		private readonly IConfiguration _config;
 		private readonly LoggedInUserDto _loggedInUserDto;
-		private readonly AuthenticationState _anonymous;
+        private readonly AuthenticationState _anonymous;
 
         public AuthStateProvider(HttpClient httpClient,
 								 ILocalStorageService localStorage,
@@ -21,7 +21,7 @@ namespace kesarjot.wasm.Authentication
             _localStorage = localStorage;
 			_config = config;
 			_loggedInUserDto = loggedInUserDto;
-			_anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -71,6 +71,7 @@ namespace kesarjot.wasm.Authentication
                         _loggedInUserDto.LastName = result.LastName;
                         _loggedInUserDto.Token = token;
                         _loggedInUserDto.Id = result.Id;
+                        _loggedInUserDto.CartId = result.CartId;
                     }
                     else
                     {
@@ -83,9 +84,9 @@ namespace kesarjot.wasm.Authentication
                         new ClaimsIdentity(JwtParser.ParseClaimsFromJWT(token),
                         "jwtAuthType"));
                 authState = Task.FromResult(new AuthenticationState(authenticatedUser));
-				NotifyAuthenticationStateChanged(authState);
+                NotifyAuthenticationStateChanged(authState);
                 isAuthenticatedOutput = true;
-			}
+            }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
@@ -98,12 +99,13 @@ namespace kesarjot.wasm.Authentication
         public async Task NotifyUserLogout()
 		{
 			string authTokenStorageKey = _config["authTokenStorageKey"];
-			await _localStorage.RemoveItemAsync(authTokenStorageKey);
-			var authState = Task.FromResult(_anonymous);
+            await _localStorage.RemoveItemAsync(authTokenStorageKey);
+            var authState = Task.FromResult(_anonymous);
             #region LogOffUser
             _httpClient.DefaultRequestHeaders.Clear();
             #endregion
             _httpClient.DefaultRequestHeaders.Authorization = null;
+            _loggedInUserDto.ResetUserModel();
             NotifyAuthenticationStateChanged(authState);
         }
     }

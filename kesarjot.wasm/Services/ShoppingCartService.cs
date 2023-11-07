@@ -60,7 +60,7 @@
             }
         }
 
-        public async Task<List<CartItemDto>> GetItems(int userId)
+        public async Task<List<CartItemDto>> GetItems(string userId)
         {
             try
             {
