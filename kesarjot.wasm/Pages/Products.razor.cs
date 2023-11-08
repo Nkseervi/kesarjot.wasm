@@ -51,7 +51,7 @@ namespace kesarjot.wasm.Pages
 
         private async Task ClearLocalStorage()
         {
-            await ManageProductsLocalStorageService.RemoveCollection();
+            //await ManageProductsLocalStorageService.RemoveCollection();
             await ManageCartItemsLocalStorageService.RemoveCollection();
         }
     }
