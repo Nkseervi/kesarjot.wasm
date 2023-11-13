@@ -19,6 +19,13 @@
         </div>
         <ProductCategoriesNavMenu />
 
+        <AuthorizeView Roles="Product Manager">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Inventory">
+                    <span class="fas fa-gear" aria-hidden="true"></span>&nbsp;Inventory
+                </NavLink>
+            </div>
+        </AuthorizeView>
 
         <div class="nav-item px-3 d-sm-none">
             <NavLink class="nav-link" href="ShoppingCart">

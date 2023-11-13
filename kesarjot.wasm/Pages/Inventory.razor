@@ -1,0 +1,14 @@
+﻿@page "/Inventory"
+<h3>Inventory</h3>
+<AuthorizeView Roles="Product Manager">
+<Authorized>
+	<DisplayProducts></DisplayProducts>
+</Authorized>
+<NotAuthorized>
+	You are not authorized to view this page
+</NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+}
