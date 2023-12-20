@@ -36,7 +36,8 @@
 
         private async Task<List<CartItemDto>> AddCollection()
         {
-            var shoppingCartCollection = await this.shoppingCartService.GetItems(_loggedInUserDto.Id);
+            var shoppingCartCollection = await this.shoppingCartService.GetItems("8e9c9233-2b0f-40f6-8ca9-a331b33748ad");
+            //var shoppingCartCollection = await this.shoppingCartService.GetItems(_loggedInUserDto.Id);
 
             if (shoppingCartCollection != null)
             {
