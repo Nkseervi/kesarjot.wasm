@@ -33,7 +33,11 @@ namespace kesarjot.wasm.Authentication
                 new KeyValuePair<string, string>("password", userForAuthentication.Password)
             });
 
+#if DEBUG
+            string api = _config["apilocationdev"] + _config["tokenEndpoint"];
+#else
             string api = _config["apiLocation"] + _config["tokenEndpoint"];
+#endif
             var authResult = await _httpClient.PostAsync(api, data);
             var authContent = await authResult.Content.ReadAsStringAsync();
 
