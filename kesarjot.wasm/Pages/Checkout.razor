@@ -2,17 +2,76 @@
 
 <h3 class="mb-5">Checkout</h3>
 <div class="row">
-    <div class="col-md-6" style="display:@DisplayButtons" >
+    <div class="col-md-6" style="display:@DisplayButtons">
         <h4 class="mb-2">Payment Method</h4>
+        @*         <h4 class="mb-2">Payment Method</h4>
         <div id="smart-button-container">
-            <input type="hidden" name="descriptionInput" id="description" @bind="PaymentDescription" />
-            <input name="amountInput" type="hidden" id="amount" @bind="PaymentAmount">
-            <div style="text-align: center; margin-top: 0.625rem;" id="paypal-button-container"></div>
-        </div>
+        <input type="hidden" name="descriptionInput" id="description" @bind="PaymentDescription" />
+        <input name="amountInput" type="hidden" id="amount" @bind="PaymentAmount">
+        <div style="text-align: center; margin-top: 0.625rem;" id="paypal-button-container"></div>
+        </div> *@
+        <h4 class="mb-2">Shipping Address</h4>
+        <EditForm Model="@model" OnValidSubmit="@OnValidSubmit">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+
+            <div class="row">
+                <label for="first-name" class="col-md-2 col-form-label">First Name:</label>
+                <div class="col-md-10">
+                    <InputText id="first-name" class="form-control" @bind-Value="model.FirstName"></InputText>
+                    <ValidationMessage For="@(() => model.FirstName)"></ValidationMessage>
+                </div>
+                <label for="last-name" class="col-md-2 col-form-label">Last Name:</label>
+                <div class="col-md-10">
+                    <InputText id="last-name" class="form-control" @bind-Value="model.LastName"></InputText>
+                    <ValidationMessage For="@(() => model.LastName)"></ValidationMessage>
+                </div>
+            </div>
+            <div class="row">
+                <label for="shipAddress1" class="col-md-2 col-form-label">Address Line 1:</label>
+                <div class="col-md-10">
+                    <InputText id="shipAddress1" class="form-control" @bind-Value="model.ShipAddress1"></InputText>
+                    <ValidationMessage For="@(() => model.ShipAddress1)"></ValidationMessage>
+                </div>
+            </div>
+            <div class="row">
+                <label for="shipAddress2" class="col-md-2 col-form-label">Address Line 2:</label>
+                <div class="col-md-10">
+                    <InputText id="shipAddress2" class="form-control" @bind-Value="model.ShipAddress2"></InputText>
+                    <ValidationMessage For="@(() => model.ShipAddress2)"></ValidationMessage>
+                </div>
+            </div>
+            <div class="row">
+                <label for="city" class="col-md-2 col-form-label">City:</label>
+                <div class="col-md-10">
+                    <InputText id="city" class="form-control" @bind-Value="model.City"></InputText>
+                    <ValidationMessage For="@(() => model.City)"></ValidationMessage>
+                </div>
+            </div>
+            <div class="row">
+                <label for="state" class="col-md-2 col-form-label">State:</label>
+                <div class="col-md-10">
+                    <InputText id="state" class="form-control" @bind-Value="model.State"></InputText>
+                    <ValidationMessage For="@(() => model.State)"></ValidationMessage>
+                </div>
+            </div>
+            <div class="row">
+                <label for="pinCode" class="col-md-2 col-form-label">Pin Code:</label>
+                <div class="col-md-10">
+                    <InputText id="pinCode" class="form-control" @bind-Value="model.PinCode"></InputText>
+                    <ValidationMessage For="@(() => model.PinCode)"></ValidationMessage>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-end">
+                    <button type="submit" class="btn btn-success">Make Payment and Place Order</button>
+                </div>
+            </div>
+        </EditForm>
     </div>
-@if (ShoppingCartItems == null)
-{
-        <DisplaySpinner/>
+    @if (ShoppingCartItems == null)
+    {
+        <DisplaySpinner />
     }
     else
     {
@@ -28,16 +87,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var item in ShoppingCartItems)
+                        @foreach (var item in ShoppingCartItems)
                         {
                             <tr>
                                 <td>@item.Qty x @item.ProductName</td>
-                                <td>@item.TotalPrice.ToString("C",CultureInfo.CreateSpecificCulture("in-IN"))</td>
+                                <td>@item.TotalPrice.ToString("C", CultureInfo.CreateSpecificCulture("in-IN"))</td>
                             </tr>
                         }
                         <tr>
                             <td><b>Total</b></td>
-                            <td><b>@PaymentAmount.ToString("C",CultureInfo.CreateSpecificCulture("in-IN"))</b></td>
+                            <td><b>@PaymentAmount.ToString("C", CultureInfo.CreateSpecificCulture("in-IN"))</b></td>
                         </tr>
                     </tbody>
                 </table>
@@ -47,7 +106,7 @@
                 <p>You currently have no items in your shopping cart</p>
             }
         </div>
-}
+    }
 </div>
 
 

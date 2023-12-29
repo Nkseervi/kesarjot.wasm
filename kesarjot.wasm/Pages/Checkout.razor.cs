@@ -14,7 +14,14 @@ namespace kesarjot.wasm.Pages
 
         [Inject]
         public IManageCartItemsLocalStorageService ManageCartItemsLocalStorageService { get; set; }
+
+
+        [Inject]
+        public IPaymentService PaymentsManager { get; set; }
+        [Inject]
+        public NavigationManager NavManager { get; set; }
         protected string DisplayButtons { get; set; } = "block";
+        ShippingAddressDto model = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -52,6 +59,25 @@ namespace kesarjot.wasm.Pages
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        private async Task OnValidSubmit()
+        {
+            try
+            {
+                OrderDto orderDto = new()
+                {
+                    Amount = Convert.ToInt32(PaymentAmount),
+                };
+                var redirectUrl = await PaymentsManager.GeneratePaymentLink(orderDto);
+
+                NavManager.NavigateTo(redirectUrl);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
             }
         }
     }

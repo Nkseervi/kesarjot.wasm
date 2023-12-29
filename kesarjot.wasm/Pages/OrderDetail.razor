@@ -1,0 +1,72 @@
+﻿@page "/OrderDetails/{Id:int}"
+@inject IPaymentService OrderManager
+
+@if (Order is null && string.IsNullOrEmpty(ErrorMessage))
+{
+    <DisplaySpinner />
+}
+else if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+    <h3 class="mb-5">Order Details</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <p class="mb-4">#@Order.Id</p>
+            <p class="mb-4">
+                <b>Created on: @Order.CreatedOn</b>
+            </p>
+            <p class="mb-4">@Order.Status</p>
+            <p class="mb-4">Last updated on: @Order.UpdatedOn</p>
+        </div>
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Order.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.Qty x @item.ProductName</td>
+                            <td>@item.SellingPrice.ToString("C", CultureInfo.CreateSpecificCulture("in-IN"))</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td><b>@Order.Amount.ToString("C", CultureInfo.CreateSpecificCulture("in-IN"))</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+
+
+@code {
+    protected string ErrorMessage = string.Empty;
+    public OrderDto Order { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            Order = await OrderManager.GetOrderDetails(Id);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+
+    }
+}
