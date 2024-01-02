@@ -68,8 +68,24 @@ namespace kesarjot.wasm.Pages
             {
                 OrderDto orderDto = new()
                 {
-                    Amount = Convert.ToInt32(PaymentAmount),
+                    Amount = PaymentAmount,
+                    OrderItems = (from cartItem in ShoppingCartItems
+                                  select new OrderItemDto
+                                  {
+                                      ProductName = cartItem.ProductName,
+                                      Qty = cartItem.Qty,
+                                      SellingPrice = cartItem.Price,
+                                      ProductDescription = cartItem.ProductDescription,
+                                      TotalPrice = cartItem.TotalPrice
+                                  }).ToList(),
+                    Payment = new PaymentDto
+                    {
+                        Amount = PaymentAmount,
+                        Gateway = "PhonePe",
+                        Mode = "Online"
+                    }
                 };
+                orderDto.Id = await PaymentsManager.CreateNewOrder(orderDto);
                 var redirectUrl = await PaymentsManager.GeneratePaymentLink(orderDto);
 
                 NavManager.NavigateTo(redirectUrl);
