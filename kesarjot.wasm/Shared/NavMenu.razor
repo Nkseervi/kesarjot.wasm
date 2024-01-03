@@ -17,7 +17,9 @@
                 <span class="fas fa-home" aria-hidden="true"></span>&nbsp;Home
             </NavLink>
         </div>
-        <ProductCategoriesNavMenu />
+        <div class="nav-item px-3">
+            <ProductCategoriesNavMenu />
+        </div>
 
         <AuthorizeView Roles="Product Manager">
             <div class="nav-item px-3">
@@ -26,15 +28,17 @@
                 </NavLink>
             </div>
         </AuthorizeView>
-
         <div class="nav-item px-3 d-sm-none">
             <NavLink class="nav-link" href="ShoppingCart">
                 <span class="fas fa-shopping-cart" aria-hidden="true"></span>&nbsp;Shopping Cart (<b>@shoppingCartItemsCount</b>)
             </NavLink>
         </div>
-
-        <PoliciesNavMenu />
-
+        <hr style="color:azure"/>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="Policy">
+                <span class="fas fa-legal" aria-hidden="true"></span>&nbsp;Policy
+            </NavLink>
+        </div>
     </nav>
 </div>
 

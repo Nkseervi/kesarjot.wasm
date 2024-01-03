@@ -1,0 +1,70 @@
+﻿@page "/Policy"
+<h3 class="mb-5">Policy</h3>
+<div class="row">
+<div class="accordion accordion-flush" id="policy">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingPrivacy">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrivacy" aria-expanded="false" aria-controls="collapsePrivacy">
+                Privacy Policy
+            </button>
+        </h2>
+        <div id="collapsePrivacy" class="accordion-collapse collapse" aria-labelledby="headingPrivacy" data-bs-parent="#policy">
+            <div class="accordion-body">
+                <PrivacyPolicy />
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTnC">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTnC" aria-expanded="false" aria-controls="collapseTnC">
+                Terms & Conditions
+            </button>
+        </h2>
+        <div id="collapseTnC" class="accordion-collapse collapse" aria-labelledby="headingTnC" data-bs-parent="#policy">
+            <div class="accordion-body">
+                <TermsConditions />
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingShip">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShip" aria-expanded="false" aria-controls="collapseShip">
+                Shipping & Delivery Policy
+            </button>
+        </h2>
+        <div id="collapseShip" class="accordion-collapse collapse" aria-labelledby="headingShip" data-bs-parent="#policy">
+            <div class="accordion-body">
+                <TermsConditions />
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingCancel">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCancel" aria-expanded="false" aria-controls="collapseCancel">
+                Cancellation & Refund Policy
+            </button>
+        </h2>
+        <div id="collapseCancel" class="accordion-collapse collapse" aria-labelledby="headingCancel" data-bs-parent="#policy">
+            <div class="accordion-body">
+                <CancellationPolicy />
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingContact">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContact" aria-expanded="false" aria-controls="collapseContact">
+                Contact Us
+            </button>
+        </h2>
+        <div id="collapseContact" class="accordion-collapse collapse" aria-labelledby="headingContact" data-bs-parent="#policy">
+            <div class="accordion-body">
+                <ContactUs />
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@code {
+
+}
