@@ -1,0 +1,64 @@
+﻿@page "/Orders"
+@inject IPaymentService PaymentManager
+
+@if (OrderList == null && ErrorMessage == null)
+{
+    <DisplaySpinner />
+
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+<h3>Orders</h3>
+    @if (OrderList.Count() > 0)
+    {
+        @foreach (var order in OrderList)
+        {
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        <img src="..." class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title">@order.CreatedOn.Humanize()</h5>
+                            @foreach(var item in order.OrderItems)
+                            {
+                                <p class="card-text">@item.Qty x @item.ProductName</p>
+                            }
+                            <p class="card-text"><small class="text-muted">@order.Status</small></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="card-text fw-bold">₹&nbsp;@order.Amount</p>
+                        <a class="btn btn-primary" href="/OrderDetail/@order.Id">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+    @code {
+    public IEnumerable<OrderDto> OrderList { get; set; }
+
+    public string ErrorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            OrderList = await PaymentManager.GetAllOrders();
+            // var shoppingCartItems = await ManageCartItemsLocalStorageService.GetCollection();
+            // var totalQty = shoppingCartItems.Sum(i => i.Qty);
+            // ShoppingCartService.RaiseEventOnShoppingCartChanged(totalQty);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
+
+}

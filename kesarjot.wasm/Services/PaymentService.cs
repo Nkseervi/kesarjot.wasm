@@ -112,5 +112,36 @@ namespace kesarjot.wasm.Services
         }
         #endregion
 
+        #region Fetch All Orders for the User
+        public async Task<IEnumerable<OrderDto>> GetAllOrders()
+        {
+            try
+            {
+                var response = await _client.GetAsync($"api/Order");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    {
+                        return default(IEnumerable<OrderDto>);
+                    }
+
+                    return await response.Content.ReadFromJsonAsync<IEnumerable<OrderDto>>();
+
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        #endregion
+
     }
 }
